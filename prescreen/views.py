@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from .models import (CovidScreen, CovidScreenInstance, Account, Event)
-# Create your views here.
+from .models import Event, Account, QuestionSet, CovidScreenData, Response
 
 def index(request):
     ''' home page '''

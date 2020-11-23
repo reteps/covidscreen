@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 import uuid
 
 class Account(models.Model):
@@ -16,24 +15,32 @@ class Event(models.Model):
     start_time = models.DateTimeField()
     # TODO Figure out shorter ID than uuid without collisions
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this event across whole system')
-    
+    custom_questions = models.ForeignKey('QuestionSet', on_delete=models.CASCADE, null=True)
+
     # covid_screen_options = models.ForeignKey('CovidScreenOptions', on_delete=models.CASCADE)
     def __str__(self):
-        return f'{self.title} {self.id}'
-class CovidScreen(models.Model):
-    ''' model representing a covid screen '''
+        return f'{self.title} {self.uuid}'
+class QuestionSet(models.Model):
+    ''' model representing the custom questions of a covid screen '''
     # TODO Figure out customization / optional questions
     # Do I just make slots for questions that could be asked?
-    temperature = models.DecimalField(max_digits=5, decimal_places=2)
-    contact_with_covid = models.BooleanField()
+    question_1 = models.CharField(max_length=200, blank=True)
+    question_2 = models.CharField(max_length=200, blank=True)
+    question_3 = models.CharField(max_length=200, blank=True)
     def __str__(self):
-        return f'Covid Screen ({self.temperature})'
-class CovidScreenInstance(models.Model):
+        return f'Covid Screen Questions ({self.question_1})'
+    
+class CovidScreenData(models.Model):
+    custom_responses = models.ForeignKey('QuestionSet', on_delete=models.CASCADE)
+    temperature = models.DecimalField(max_digits=5, decimal_places=2, default=98.6)
+    contact_with_covid = models.BooleanField(default=False)
+
+class Response(models.Model):
     ''' model for a completed covid screen '''
     # TODO should this be a uuid for security reasons instead?
-    details = models.ForeignKey('CovidScreen', on_delete=models.CASCADE)
     account = models.ForeignKey('Account', on_delete=models.SET_NULL, null=True)
     time = models.DateTimeField()
     event = models.ForeignKey('Event', on_delete=models.CASCADE)
+    details = models.ForeignKey('CovidScreenData', on_delete=models.CASCADE)
     def __str__(self):
-        return '{self.account.user.username} - {self.event.title} ({self.details.temperature})'
+        return f'{self.account.user.username}\'s Response ({self.event.title})'
