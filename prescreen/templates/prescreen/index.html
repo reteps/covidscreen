@@ -3,8 +3,16 @@
 Home page
 {% endblock %}
 {% block content %}
-<h1> CovidScreen Home</h1>
+<h1> CovidScreen Testing Home</h1>
+<p> {{events|length}} Event{{ events|length|pluralize }}
+    </p>
 <ul>
-    <li><strong>Number of events:</strong> {{ num_events}}</li>
+    {% for event in events %}
+        <li>
+        <strong> Title: </strong> {{ event.title }} <br>
+        <strong> Number of Responses: </strong> {{ event.num_responses }} <br>
+        <strong> Created By: </strong> {{ event.creator.user.username }} <br>
+        </li>
+    {% endfor %}
 </ul>
 {% endblock %}

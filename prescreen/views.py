@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from .models import Event, Account, QuestionSet, CovidScreenData, Response
+from .models import Event, Account, CustomQuestionResponse, Response, CustomQuestion
 
 def index(request):
     ''' home page '''
-    num_events = Event.objects.all().count()
     context = {
-        "num_events": num_events
+        "events": Event.objects.all()
     }
+    # TODO Pagination
+    
     return render(request, "prescreen/index.html", context=context)
