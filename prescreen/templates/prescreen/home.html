@@ -3,13 +3,14 @@
 Home page
 {% endblock %}
 {% block content %}
-<h1> CovidScreen Testing Home</h1>
+<h1> My events TODO: filter</h1>
 <p> {{events|length}} Event{{ events|length|pluralize }}
     </p>
 <ul>
     {% for event in events %}
         <li>
         <strong> Title: </strong> {{ event.title }} <br>
+        <a href="{{ event.get_absolute_url }}"> Event Details </a><br>
         <strong> Start time: </strong> {{ event.start_time }} <br>
         <strong> Number of Responses: </strong> {{ event.num_responses }} <br>
         {% comment %} {% for response in event.response_set.all %}
