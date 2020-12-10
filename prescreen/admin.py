@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, Account, CustomQuestionResponse, CustomQuestion, Response
+from prescreen.models import Event, CustomQuestionResponse, CustomQuestion, Response
 # Register your models here.
 
 class CustomQuestionsInline(admin.StackedInline):
@@ -31,9 +31,7 @@ class ResponseAdmin(admin.ModelAdmin):
             'fields': ('temperature', 'contact_with_covid'),
         })
     )
-@admin.register(Account)
-class AccountAdmin(admin.ModelAdmin):
-    pass
+
 
 @admin.register(CustomQuestionResponse)
 class CustomQuestionResponseAdmin(admin.ModelAdmin):
