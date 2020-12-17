@@ -19,12 +19,14 @@
 					<li><a href="{% url 'home' %}">Home</a></li>
 					{% if user.is_authenticated %}
 					<li>User: {{ user.get_username }}</li>
-					<li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+					<li><a href="{% url 'logout'%}?next={% url 'home' %}">Logout</a></li>
 					<li><a href="{% url 'event-create' %}">Create Event</a></li>
+					<li><a href="{% url 'event-join' %}">Join Event</a></li>
 					{% else %}
 					<li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
 					<li><a href="{% url 'register'%}?next={{request.path}}">Register</a></li>
 					{% endif %}
+					<li><a href="{% url 'event-list-all' %}">All Events</a></li>
 				</ul>
 				{% endblock %}
             </div>

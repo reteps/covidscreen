@@ -2,13 +2,15 @@ from django.db import models
 from django.urls import reverse  # generate URLs by reversing URL patterns
 import uuid
 from users.models import Account
-
+# https://stackoverflow.com/questions/3367091/whats-the-cleanest-simplest-to-get-running-datepicker-in-django
+from django import forms
+from datetime import datetime
 class Event(models.Model):
     """ model for an event """
 
     creator = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, help_text="Enter a title for this event")
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now)
     # TODO Figure out shorter ID than uuid without collisions
     uuid = models.UUIDField(
         primary_key=True,
@@ -61,8 +63,15 @@ class Response(models.Model):
     temperature = models.DecimalField(max_digits=5, decimal_places=2, default=98.6)
     contact_with_covid = models.BooleanField(default=False)
     account = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
-    time = models.DateTimeField()
+    time = models.DateTimeField(auto_now_add=True)
     event = models.ForeignKey("Event", on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.account.user.username}\'s response for "{self.event.title}"'
+    
+    def get_absolute_url(self):
+        return reverse("response-detail", kwargs={"pk": self.pk})
+    def get_update_url(self):
+        return reverse('response-update', kwargs={'pk': self.pk})
+    def passes_validation(self):
+        return self.temperature < 101 and self.contact_with_covid == False

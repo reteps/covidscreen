@@ -1,22 +1,18 @@
-  {% extends "prescreen/base.html" %}
+{% extends "prescreen/base.html" %}
 
-  {% block content %}
-    <h1> Title: {{ event.title }} </h1>
-    {% if is_creator %}
-    <a href="{% url 'event-update' pk=event.uuid %}"> Edit it </a>
-    <p> Responses </p>
-    {% for response in event.response_set.all %}
-      <ul>
-        <li>
-          {{ response.account.user.username }}
-          {{ response.temperature }}<br>
-          {% for custom_response in response.customquestionresponse_set.all %}
-          {{ custom_response.question }} - {{ custom_response.answer }}<br>
-          {% endfor %}
-        </li>
-      </ul>
-    {% endfor %}
-    {% else %}
-      <p> You are not the creator of this event</p>
-    {% endif %}
-  {% endblock %}
+{% block content %}
+  <h1> {{ event.title }} </h1>
+  {% if my_response %}
+    <a href="{{ my_response.get_absolute_url }}"> View my response </a>
+  {% else %}
+    <a href="{% url 'response-create' event=event.uuid %}"> Create response </a>
+  {% endif %}
+  {% if is_creator %}
+  <p>
+  <a href="{% url 'event-update' pk=event.uuid %}"> Edit event details </a><br>
+  <a href="{% url 'response-list' event=event.uuid %}"> View all responses </a>
+  </p>
+  {% else %}
+    <p>You are not the creator of this event. The creator of this event is {{event.creator.user.username }}. </p>
+  {% endif %}
+{% endblock %}

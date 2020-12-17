@@ -1,0 +1,32 @@
+{% extends "prescreen/base.html" %}
+{% block title %}
+Home page
+{% endblock %}
+{% block content %}
+<h1> Events </h1>
+<p> {{events|length}} Event{{ events|length|pluralize }}
+</p>
+<ul>
+	{% for event in events %}
+	<li>
+		<strong> Title: </strong> {{ event.title }} <br>
+		<a href="{{ event.get_absolute_url }}"> Event Details </a><br>
+		<strong> Start time: </strong> {{ event.start_time }} <br>
+		<strong> Number of Responses: </strong> {{ event.num_responses }} <br>
+		{% comment %} {% for response in event.response_set.all %}
+		<ul>
+			<li>
+				{{ response.account.user.username }}
+				{{ response.temperature }}
+				{% for custom_response in response.customquestionresponse_set.all %}
+				{{ custom_response.question.text }}
+				{{ custom_response.question.answer }}
+				{% endfor %}
+			</li>
+		</ul>
+		{% endfor %} {% endcomment %}
+		<strong> Created By: </strong> {{ event.creator.user.username }} <br>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}

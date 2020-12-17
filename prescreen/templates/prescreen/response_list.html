@@ -1,0 +1,22 @@
+{% extends "prescreen/base.html" %}
+
+{% block content %}
+  <a href="{% url 'event-detail' request.resolver_match.kwargs.event %}"> Back to event details </a>
+{% if response_list %}
+<h1> Responses </a>
+  {% for response in response_list %}
+  <ul>
+  	<li>
+  		{{ response.account.user.username }}
+  		{{ response.temperature }}<br>
+  		{% for custom_response in response.customquestionresponse_set.all %}
+  		{{ custom_response.question }} - {{ custom_response.answer }}<br>
+		<a href="{{ response.absolute_url }}">Details</a>
+  		{% endfor %}
+  	</li>
+  </ul>
+  {% endfor %}
+{% else %}
+<h1> No responses yet</h1>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "prescreen/base.html" %}
+{% block content %}
+
+<p> Response Detail </p>
+<a href="{{ response.event.get_absolute_url }}"> Event details </a><br>
+<a href="{{ response.get_update_url}}"> Modify Response </a>
+<p> Temperature: {{ response.temperature }} </p>
+
+<p> You are allowed to attend this event: {{response.passes_validation}}</p>
+{% endblock content %}
